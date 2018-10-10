@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Member } from '../../types/member';
@@ -12,10 +12,15 @@ import { MembersService } from '../../services/members.service';
 })
 export class RegisterComponent implements OnInit {
 
+  step = 'detail';
   member: any = {};
-  angForm: FormGroup;
+  membership: any = {};
+  league: any = {};
+  detailsForm: FormGroup;
+  membershipForm: FormGroup;
+  leagueForm: FormGroup;
 
-  constructor( 
+  constructor(
     private route: ActivatedRoute,
     private router: Router,
     private membersService: MembersService,
@@ -25,11 +30,19 @@ export class RegisterComponent implements OnInit {
   }
 
   createForm() {
-    this.angForm = this.fb.group({
-      member_fname: ['', Validators.required ],
-      member_lname: ['', Validators.required ],
-      member_pri_email: ['', Validators.required ],
-      member_password: ['', Validators.required ]
+    this.detailsForm = this.fb.group({
+      member_fname: ['', Validators.required],
+      member_lname: ['', Validators.required],
+      member_pri_email: ['', Validators.required],
+      member_password: ['', Validators.required]
+    });
+    this.membershipForm = this.fb.group({
+      membershipType: ['', Validators.required],
+      memberAccept: ['', Validators.required]
+    });
+    this.leagueForm = this.fb.group({
+      c1: ['', Validators.required],
+      c2: ['', Validators.required]
     });
   }
 
@@ -42,5 +55,17 @@ export class RegisterComponent implements OnInit {
         console.log(res);
         this.router.navigate(['']);
       });
- }
+  }
+
+  prepareDetails() {
+    this.step = 'membership';
+  }
+
+  prepareMembership() {
+    this.step = 'league';
+  }
+
+  prepareLeague() {
+    this.step = 'confirm';
+  }
 }

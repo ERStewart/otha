@@ -16,9 +16,9 @@ export class SessionService {
            .post(`${this.uri}/login`, member);
   }
 
-  validate(token) {
+  getRole() {
     return this
            .http
-           .post(`${this.uri}`, {access_token: token});
+           .get(`${this.uri}/role`);
   }
 }

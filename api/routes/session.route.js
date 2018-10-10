@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const sessionRoute = express.Router();
+const auth = require('../auth')
 
 // Require member model in our routes module
 let Member_Account = require('../models/member_account');
@@ -38,9 +39,9 @@ sessionRoute.route('/login').post(function (req, res) {
 });
 
 // Validate member session
-sessionRoute.route('/validate').get(function (req, res) {
-    Member_Account.findAll().then(members =>{
-        res.json(members);
+sessionRoute.route('/role').get(auth.member, function (req, res) {
+    Member_Account.findOne({where:{member_id:req.member_id}}).then(member =>{
+        res.json({success:true, member_role_id: member.dataValues.member_role_id});
     });
 });
 

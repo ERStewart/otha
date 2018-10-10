@@ -11,12 +11,15 @@ import { ContactComponent } from './components/contact/contact.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ManageMembersComponent } from './components/manage-members/manage-members.component';
 import { LoginComponent } from './components/login/login.component';
+import { TopMenuComponent } from './components/top-menu/top-menu.component';
 
 import { MembersService } from './services/members.service';
 import { SessionService } from './services/session.service';
 
 import { AuthInterceptor } from './helpers/auth.interceptor';
-import { ErrorInterceptor } from './helpers/error.interceptor'
+import { ErrorInterceptor } from './helpers/error.interceptor';
+
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -33,15 +36,18 @@ const routes: Routes = [
   },
   {
     path: 'profile',
-    component: ProfileComponent
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'profile/:id',
-    component: ProfileComponent
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'manage-members',
-    component: ManageMembersComponent
+    component: ManageMembersComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -57,7 +63,8 @@ const routes: Routes = [
     ContactComponent,
     ProfileComponent,
     ManageMembersComponent,
-    LoginComponent
+    LoginComponent,
+    TopMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -68,6 +75,7 @@ const routes: Routes = [
   providers: [
     MembersService,
     SessionService,
+    AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
