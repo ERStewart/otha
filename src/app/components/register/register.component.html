@@ -1,5 +1,5 @@
 <div class="container">
-  <div *ngIf="step == 'detail'" class="card">
+  <div *ngIf="step == 1" class="card">
     <div class="card-body">
       <form [formGroup]="detailsForm" novalidate>
         <div class="form-group">
@@ -52,51 +52,140 @@
       </form>
     </div>
   </div>
-  <div *ngIf="step == 'membership'" class="card">
+  <div *ngIf="step == 2" class="card">
     <div class="card-body">
+      <h2>Membership</h2>
       <form [formGroup]="membershipForm" novalidate>
-        <div class="form-group">
-          <label class="col-md-4">Membership</label>
-          <input type="radio" class="form-control" value='1' name="membershipType" formControlName="membershipType" #membershipType
-            [(ngModel)]="membership.membershipType" /> 1-Year Membership
+        <div class="row">
+          <label class="col-md-4">
+            <input type="radio" [checked]="true" value='1' name="membershipTypeRadio" formControlName="membershipTypeRadio"
+              #membershipTypeRadio disabled [(ngModel)]="membershipType" />
+            1-Year Membership
+          </label>
+        </div>
+        <div class="row">
+          <label class="col-md-4">
+            <input type="checkbox" name="memberAcceptCheckbox" formControlName="memberAcceptCheckbox"
+              #memberAcceptCheckbox [(ngModel)]="memberAccept" />
+            Accept Rules
+          </label>
         </div>
         <div class="form-group">
-          <label class="col-md-4">Accept Rules</label>
-          <input type="checkbox" class="form-control" name="memberAccept" formControlName="memberAccept" #memberAccept
-            [(ngModel)]="membership.memberAccept" />
-        </div>
-        <div class="form-group">
-          <button (click)="prepareMembership()" [disabled]="membershipForm.invalid" class="btn btn-primary">Next</button>
+          <button (click)="prepareMembership()" [disabled]="!memberAccept" class="btn btn-primary">Next</button>
+          <button (click)="back()" class="btn btn-danger">Back</button>
         </div>
       </form>
     </div>
   </div>
-  <div *ngIf="step == 'league'" class="card">
+  <div *ngIf="step == 3 && leagues" class="card">
     <div class="card-body">
-      <form [formGroup]="leagueForm" novalidate>
-        <div class="form-group">
-          <label class="col-md-4">Choose League</label>
-          <input type="checkbox" class="form-control" name="c1" formControlName="c1" #c1
-            [(ngModel)]="league.c1" /> C1
-          <input type="checkbox" class="form-control" name="c2" formControlName="c2" #c2
-            [(ngModel)]="league.c2" /> C2
+      <h2>Leagues</h2>
+      <div *ngFor="let league of leagues" class="card">
+        <div class="card-body">
+          <h4>{{league.league_name}}</h4>
+          <div *ngFor="let item of league.items" class="row">
+            <div class="col-6">
+              <div class="row">
+                <label>
+                  <input type="checkbox" (click)="toggleLeagueItem(league, item.item)">
+                  {{item.item.item_name}}: Price {{item.item.item_price}}
+                </label>
+              </div>
+              <div *ngIf="jerseyDepositItem" class="row">
+                <div class="col-5">
+                  Jersey Deposit: {{jerseyDepositItem.item_price}}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <button (click)="prepareLeague()" [disabled]="leagueForm.invalid" class="btn btn-primary">Next</button>
-        </div>
-      </form>
+      </div>
+      <button (click)="prepareLeague()" class="btn btn-primary">Next</button>
+      <button (click)="back()" class="btn btn-danger">Back</button>
     </div>
   </div>
-  <div *ngIf="step == 'confirm'" class="card">
+  <div *ngIf="step == 4" class="card">
     <div class="card-body">
       <h2>Confirmation</h2>
       <div class="row">
-        <div class="col-6">Details</div>
+        <div class="col-6">
+          <h4>Details</h4>
+        </div>
       </div>
       <div class="row">
-        <div class="col-3">First Name</div>
-        <div class="col-3">{{member.member_fname}}</div>
+        <div class="col-2">First Name</div>
+        <div class="col-6">{{member.member_fname}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2">Last Name</div>
+        <div class="col-6">{{member.member_lname}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2">E-Mail Address</div>
+        <div class="col-6">{{member.member_pri_email}}</div>
+      </div>
+      <h4>Membership</h4>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <td colspan="3">Type</td>
+            <td>Price</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="membershipItem">
+            <td colspan="3">{{membershipItem.item_desc}}</td>
+            <td>{{membershipItem.item_price}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="leagueItems.length">
+        <h4>League Registration</h4>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <td colspan="1">Name</td>
+              <td colspan="1">Level</td>
+              <td colspan="1">Position</td>
+              <td colspan="1">Price</td>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let league of leagueItems">
+                <tr>
+                    <td colspan="1">{{league.league_name}}</td>
+                    <td colspan="1">{{league.league_level}}</td>
+                    <td colspan="1">{{league.position.item_desc}}</td>
+                    <td colspan="1">{{league.position.item_price}}</td>
+                  </tr>
+                  <tr *ngIf="league.jerseyDeposit">
+                      <td colspan="3">Jersey Deposit</td>
+                      <td colspan="1">{{jerseyDepositItem.item_price}}</td>
+                  </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-3 pull-right">
+            <h4>Total: {{total}}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-1">
+        <button (click)="back()" class="btn btn-danger">Back</button>
+      </div>
+      <div class="col-1">
+        <button (click)="registerMember()" class="btn btn-danger">Confirm</button>
       </div>
     </div>
   </div>
 </div>
+
+<ngx-smart-modal #confirmModal identifier="confirmModal">
+    <h1>Title</h1>
+    <p>Some stuff...</p>
+  
+    <button (click)="confirmModal.close()">Close</button>
+  </ngx-smart-modal>

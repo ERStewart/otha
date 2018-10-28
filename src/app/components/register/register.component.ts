@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
-import { Member } from '../../types/member';
 import { MembersService } from '../../services/members.service';
+import { LeagueService } from '../../services/league.service';
+import { ItemService } from '../../services/item.service';
+import { RegisterService } from '../../services/register.service';
 
 @Component({
   selector: 'app-register',
@@ -12,21 +16,49 @@ import { MembersService } from '../../services/members.service';
 })
 export class RegisterComponent implements OnInit {
 
-  step = 'detail';
+  step = 1;
+  total = 0;
+  jerseyDepositItem;
+
   member: any = {};
-  membership: any = {};
+  membershipType = 1;
+  membershipItem: any = { item_price: 0 };
+  memberAccept = false;
+
+  items;
+  leagueItems = [];
+  leagues;
+  leaguesControls;
+  controls;
+
   league: any = {};
   detailsForm: FormGroup;
   membershipForm: FormGroup;
-  leagueForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private membersService: MembersService,
-    private fb: FormBuilder
+    private leagueService: LeagueService,
+    private itemService: ItemService,
+    private registerService: RegisterService,
+    private fb: FormBuilder,
+    public ngxSmartModalService: NgxSmartModalService
   ) {
     this.createForm();
+  }
+
+  ngOnInit() {
+    forkJoin(
+      this.itemService.getItemsList(),
+      this.leagueService.getLeaguesList()
+    ).subscribe(([items, leagues]) => {
+      this.items = items;
+      this.leagues = leagues;
+      this.jerseyDepositItem = this.items.find(item => {
+        return item.item_id == 6;
+      })
+    })
   }
 
   createForm() {
@@ -37,35 +69,89 @@ export class RegisterComponent implements OnInit {
       member_password: ['', Validators.required]
     });
     this.membershipForm = this.fb.group({
-      membershipType: ['', Validators.required],
-      memberAccept: ['', Validators.required]
-    });
-    this.leagueForm = this.fb.group({
-      c1: ['', Validators.required],
-      c2: ['', Validators.required]
+      membershipTypeRadio: ['', Validators.required],
+      memberAcceptCheckbox: ['', Validators.required]
     });
   }
 
-  ngOnInit() {
-  }
+  registerMember() {
+    let cart = [];
 
-  createMember() {
-    this.membersService.addMember(this.member)
-      .then(res => {
+    this.leagueItems.forEach(league => {
+      cart.push(league.position.item_id)
+
+      if(league.jerseyDeposit){
+        cart.push(league.jerseyDeposit)
+      }
+    })
+
+    if(this.membershipItem.item_id) {
+      cart.push(this.membershipItem.item_id)
+    }
+
+    let data = {
+      cart: cart,
+      member: this.member
+    }
+
+    this.registerService.registerMember(data)
+      .subscribe(res => {
         console.log(res);
-        this.router.navigate(['']);
+        this.ngxSmartModalService.getModal('confirmModal').open()
       });
   }
 
   prepareDetails() {
-    this.step = 'membership';
+    this.step += 1;
   }
 
   prepareMembership() {
-    this.step = 'league';
+    this.membershipItem = this.items.find(item => {
+      return item.item_id == this.membershipType;
+    })
+
+    this.total = this.membershipItem.item_price;
+
+    this.step += 1;
   }
 
   prepareLeague() {
-    this.step = 'confirm';
+    this.total = this.membershipItem.item_price;
+    this.leagueItems.forEach(league => {
+      this.total += league.position.item_price;
+
+      if (league.jerseyDeposit) {
+        this.total += this.jerseyDepositItem.item_price;
+      }
+    })
+    this.step += 1;
+  }
+
+  back() {
+    this.step -= 1;
+  }
+
+  toggleLeagueItem(league, positionItem) {
+    let index = this.leagueItems.findIndex(item => {
+      return item.league_id == league.league_id;
+    });
+
+    if (index === -1) {
+      let leagueItem = {
+        league_desc: league.league_desc,
+        league_id: league.league_id,
+        league_level: league.league_level,
+        league_name: league.league_name,
+        position: positionItem
+      }
+
+      if (this.jerseyDepositItem) {
+        leagueItem['jerseyDeposit'] = this.jerseyDepositItem.item_id;
+      }
+
+      this.leagueItems.push(leagueItem);
+    } else {
+      this.leagueItems.splice(index, 1)
+    }
   }
 }

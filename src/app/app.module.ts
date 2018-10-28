@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxSmartModalModule } from 'ngx-smart-modal';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -15,6 +16,9 @@ import { TopMenuComponent } from './components/top-menu/top-menu.component';
 
 import { MembersService } from './services/members.service';
 import { SessionService } from './services/session.service';
+import { LeagueService } from './services/league.service';
+import { ItemService } from './services/item.service';
+import { RegisterService } from './services/register.service';
 
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
@@ -70,11 +74,15 @@ const routes: Routes = [
     BrowserModule,
     RouterModule.forRoot(routes),
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSmartModalModule.forRoot()
   ],
   providers: [
     MembersService,
     SessionService,
+    LeagueService,
+    ItemService,
+    RegisterService,
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
