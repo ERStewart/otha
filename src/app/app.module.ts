@@ -13,12 +13,14 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ManageMembersComponent } from './components/manage-members/manage-members.component';
 import { LoginComponent } from './components/login/login.component';
 import { TopMenuComponent } from './components/top-menu/top-menu.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 import { MembersService } from './services/members.service';
 import { SessionService } from './services/session.service';
 import { LeagueService } from './services/league.service';
 import { ItemService } from './services/item.service';
 import { RegisterService } from './services/register.service';
+import { TransactionService } from './services/transaction.service';
 
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
@@ -56,6 +58,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'payment',
+    component: PaymentComponent
   }
 ];
 
@@ -68,7 +74,8 @@ const routes: Routes = [
     ProfileComponent,
     ManageMembersComponent,
     LoginComponent,
-    TopMenuComponent
+    TopMenuComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
@@ -83,6 +90,7 @@ const routes: Routes = [
     LeagueService,
     ItemService,
     RegisterService,
+    TransactionService,
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }

@@ -34,9 +34,16 @@ memberRoutes.route('/').get(auth.member, function (req, res) {
 });
 
 // Defined edit route
-memberRoutes.route('/:id').get(auth.member, function (req, res) {
+memberRoutes.route('/profile/:id').get(auth.member, function (req, res) {
     let id = req.params.id;
     Member.findById(id).then(member =>{
+        res.json(member);
+    });
+});
+
+// get individual user profile
+memberRoutes.route('/profile').get(auth.member, function (req, res) {
+    Member.findById(req.member_id).then(member =>{
         res.json(member);
     });
 });

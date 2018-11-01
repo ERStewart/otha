@@ -26,6 +26,9 @@ app.use('/league', leagueRoutes);
 const itemRoutes = require('./routes/item.route');
 app.use('/item', itemRoutes);
 
+const transactionRoutes = require('./routes/transaction.route');
+app.use('/transaction', transactionRoutes);
+
 var server = app.listen(port, function(){
     console.log('Listening on port ' + port);
 });

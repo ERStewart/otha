@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
       if (params['id']) {
         this.getMember(params['id']);
       } else {
-        this.getMember(5);
+        this.getProfile();
       }
     })
   }
@@ -44,6 +44,14 @@ export class ProfileComponent implements OnInit {
   getMember(member_id) {
     this.membersService
       .getMember(member_id)
+      .subscribe((data: any) => {
+      this.member = data;
+    });
+  }
+
+  getProfile() {
+    this.membersService
+      .getProfile()
       .subscribe((data: any) => {
       this.member = data;
     });

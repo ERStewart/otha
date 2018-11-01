@@ -19,7 +19,13 @@ export class MembersService {
   getMember(member_id) {
     return this
            .http
-           .get(`${this.uri}/${member_id}`);
+           .get(`${this.uri}/profile/${member_id}`);
+  }
+
+  getProfile() {
+    return this
+           .http
+           .get(`${this.uri}/profile`);
   }
 
   addMember(member) {
