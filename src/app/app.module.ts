@@ -13,7 +13,9 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ManageMembersComponent } from './components/manage-members/manage-members.component';
 import { LoginComponent } from './components/login/login.component';
 import { TopMenuComponent } from './components/top-menu/top-menu.component';
+import { TransactionsComponent } from './components/transactions/transactions.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 
 import { MembersService } from './services/members.service';
 import { SessionService } from './services/session.service';
@@ -60,8 +62,16 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'payment',
+    path: 'transactions',
+    component: TransactionsComponent
+  },
+  {
+    path: 'payment/:id',
     component: PaymentComponent
+  },
+  {
+    path: 'confirmation/:id',
+    component: ConfirmationComponent
   }
 ];
 
@@ -75,7 +85,9 @@ const routes: Routes = [
     ManageMembersComponent,
     LoginComponent,
     TopMenuComponent,
-    PaymentComponent
+    PaymentComponent,
+    ConfirmationComponent,
+    TransactionsComponent
   ],
   imports: [
     BrowserModule,

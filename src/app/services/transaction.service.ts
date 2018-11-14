@@ -15,4 +15,16 @@ export class TransactionService {
            .http
            .get(`${this.uri}/member`);
   }
+
+  confirmMemberTransaction(id) {
+    return this
+           .http
+           .post(`${this.uri}/member`, {paypalId: id});
+  }
+
+  getMemberTransaction(id) {
+    return this
+           .http
+           .get(`${this.uri}/get-one/${id}`);
+  }
 }

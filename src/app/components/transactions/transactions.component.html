@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="header">
+    <h2>Transactions</h2>
+  </div>
+  <div *ngFor="let transaction of transactions" class="card">
+    <div class="card-body">
+      <div class="row">
+          <div class="col-lg-2">
+              Id: {{transaction.transaction_id}}
+          </div>
+          <div class="col-lg-2">
+              Total: {{transaction.transaction_total_amount}}
+          </div>
+          <div class="col-lg-8">
+            <div class="btn-group float-right" role="group">
+              <button type="button" class="btn btn-danger">Delete</button>
+              <button type="button" class="btn btn-secondary">Edit</button>
+              <button type="button" class="btn btn-primary" (click)="payTransaction(transaction.transaction_id)">Pay</button>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

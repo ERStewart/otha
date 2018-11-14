@@ -5,6 +5,32 @@
     </div>
   </div>
   <div class="card-body">
-    
+    <table class="table">
+      <caption>Transaction Date: {{transaction?.created_date}}</caption>
+      <thead class="thead-dark">
+        <tr>
+          <td colspan="1">Item</td>
+          <td colspan="1">Price</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of transaction?.transaction_items">
+          <td colspan="1">{{item.item.item_desc}}</td>
+          <td colspan="1">{{item.item_price}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="row">
+      <div class="col-3 pull-right">
+        <h4>Total: {{grandTotal}}</h4>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-6">
+          <div id="paypal-checkout-btn"></div>
+      </div>
+    </div>
   </div>
 </div>

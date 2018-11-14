@@ -17,6 +17,8 @@ export class ErrorInterceptor implements HttpInterceptor {
                 localStorage.removeItem('access_token');
                 this.router.navigate(['/login']);
             }
+
+            console.log(request)
             
             const error = err.error.message || err.statusText;
             return throwError(error);
