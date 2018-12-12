@@ -77,31 +77,41 @@
       </form>
     </div>
   </div>
-  <div *ngIf="step == 3 && leagues" class="card">
-    <div class="card-body">
+  <div *ngIf="step == 3 && seasons" class="container">
+    <div class="header">
       <h2>Leagues</h2>
-      <div *ngFor="let league of leagues" class="card">
-        <div class="card-body">
-          <h4>{{league.league_name}}</h4>
-          <div *ngFor="let item of league.items" class="row">
-            <div class="col-6">
-              <div class="row">
-                <label>
-                  <input type="checkbox" (click)="toggleLeagueItem(league, item.item)">
-                  {{item.item.item_name}}: Price {{item.item.item_price}}
-                </label>
-              </div>
-              <div *ngIf="jerseyDepositItem" class="row">
-                <div class="col-5">
-                  Jersey Deposit: {{jerseyDepositItem.item_price}}
+    </div>
+    <div *ngFor="let season of seasons" class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>{{season.league.league_name}}</h4>
+          </div>
+          <div class="card-body">
+            <div *ngFor="let item of season.items" class="row">
+              <div class="col-6">
+                <div class="row">
+                  <label>
+                    <input type="checkbox" (click)="toggleLeagueItem(season, item.item)">
+                    {{item.item.item_name}}: Price {{item.item.item_price}}
+                  </label>
+                </div>
+                <div *ngIf="jerseyDepositItem" class="row">
+                  <div class="col-5">
+                    Jersey Deposit: {{jerseyDepositItem.item_price}}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <button (click)="prepareLeague()" class="btn btn-primary">Next</button>
-      <button (click)="back()" class="btn btn-danger">Back</button>
+    </div>
+    <div class="row">
+      <div class="col-4">
+          <button (click)="prepareLeague()" class="btn btn-primary">Next</button>
+          <button (click)="back()" class="btn btn-danger">Back</button>
+      </div>
     </div>
   </div>
   <div *ngIf="step == 4" class="card">
@@ -152,16 +162,16 @@
           </thead>
           <tbody>
             <ng-container *ngFor="let league of leagueItems">
-                <tr>
-                    <td colspan="1">{{league.league_name}}</td>
-                    <td colspan="1">{{league.league_level}}</td>
-                    <td colspan="1">{{league.position.item_desc}}</td>
-                    <td colspan="1">{{league.position.item_price}}</td>
-                  </tr>
-                  <tr *ngIf="league.jerseyDeposit">
-                      <td colspan="3">Jersey Deposit</td>
-                      <td colspan="1">{{jerseyDepositItem.item_price}}</td>
-                  </tr>
+              <tr>
+                <td colspan="1">{{league.league_name}}</td>
+                <td colspan="1">{{league.league_level}}</td>
+                <td colspan="1">{{league.position.item_desc}}</td>
+                <td colspan="1">{{league.position.item_price}}</td>
+              </tr>
+              <tr *ngIf="league.jerseyDeposit">
+                <td colspan="3">Jersey Deposit</td>
+                <td colspan="1">{{jerseyDepositItem.item_price}}</td>
+              </tr>
             </ng-container>
           </tbody>
         </table>
@@ -184,8 +194,8 @@
 </div>
 
 <ngx-smart-modal #confirmModal identifier="confirmModal">
-    <h1>Title</h1>
-    <p>Some stuff...</p>
-  
-    <button (click)="confirmModal.close()">Close</button>
-  </ngx-smart-modal>
+  <h1>Title</h1>
+  <p>Some stuff...</p>
+
+  <button (click)="confirmModal.close()">Close</button>
+</ngx-smart-modal>

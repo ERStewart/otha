@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../sequelize');
 
-const League_Item = sequelize.define('league_item', {
-  league_id: {
+const Season_Item = sequelize.define('season_item', {
+  season_id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
   },
@@ -14,4 +14,4 @@ const League_Item = sequelize.define('league_item', {
     timestamps: false
 });
 
-module.exports = League_Item
+module.exports = Season_Item

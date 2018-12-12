@@ -20,6 +20,7 @@ import { ConfirmationComponent } from './components/confirmation/confirmation.co
 import { MembersService } from './services/members.service';
 import { SessionService } from './services/session.service';
 import { LeagueService } from './services/league.service';
+import { SeasonService } from './services/season.service';
 import { ItemService } from './services/item.service';
 import { RegisterService } from './services/register.service';
 import { TransactionService } from './services/transaction.service';
@@ -100,6 +101,7 @@ const routes: Routes = [
     MembersService,
     SessionService,
     LeagueService,
+    SeasonService,
     ItemService,
     RegisterService,
     TransactionService,

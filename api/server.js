@@ -20,8 +20,11 @@ app.use('/session', sessionRoutes);
 const registerRoutes = require('./routes/register.route');
 app.use('/register', registerRoutes);
 
-const leagueRoutes = require('./routes/league.route');
-app.use('/league', leagueRoutes);
+// const leagueRoutes = require('./routes/league.route');
+// app.use('/league', leagueRoutes);
+
+const seasonRoutes = require('./routes/season.route');
+app.use('/season', seasonRoutes);
 
 const itemRoutes = require('./routes/item.route');
 app.use('/item', itemRoutes);

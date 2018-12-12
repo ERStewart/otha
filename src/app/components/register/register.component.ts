@@ -5,7 +5,7 @@ import { forkJoin } from 'rxjs';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 
 import { MembersService } from '../../services/members.service';
-import { LeagueService } from '../../services/league.service';
+import { SeasonService } from '../../services/season.service';
 import { ItemService } from '../../services/item.service';
 import { RegisterService } from '../../services/register.service';
 
@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
 
   items;
   leagueItems = [];
-  leagues;
+  seasons;
   leaguesControls;
   controls;
 
@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private membersService: MembersService,
-    private leagueService: LeagueService,
+    private seasonService: SeasonService,
     private itemService: ItemService,
     private registerService: RegisterService,
     private fb: FormBuilder,
@@ -51,10 +51,10 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     forkJoin(
       this.itemService.getItemsList(),
-      this.leagueService.getLeaguesList()
-    ).subscribe(([items, leagues]) => {
+      this.seasonService.getOpenSeasons()
+    ).subscribe(([items, seasons]) => {
       this.items = items;
-      this.leagues = leagues;
+      this.seasons = seasons;
       this.jerseyDepositItem = this.items.find(item => {
         return item.item_id == 6;
       })

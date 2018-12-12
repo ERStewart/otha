@@ -6,36 +6,36 @@
   </div>
   <div *ngIf="transactionId" class="card-body">
     <div class="row">
-      <div class="col-6">
+      <div class="col-12">
         <h4>Order Id: {{transactionId}}</h4>
       </div>
     </div>
     <div class="row">
-      <div class="col-6">
+      <div class="col-12">
         <h4>Payment Id: {{paypalId}}</h4>
       </div>
     </div>
     <div class="row">
-        <div class="col-6 ">
-          <p>Please maintain a copy of this page for your records</p>
-        </div>
+      <div class="col-12">
+        <p>Please maintain a copy of this page for your records</p>
       </div>
+    </div>
   </div>
   <div *ngIf="error" class="card-body">
-      <div class="row">
-        <div class="col-6">
-          <h4>ERROR! Confirmation Failed!</h4>
-        </div>
+    <div class="row">
+      <div class="col-12">
+        <h4>ERROR! Confirmation Failed!</h4>
       </div>
-      <div class="row">
-        <div class="col-6">
-          <h4>Payment Id: {{paypalId}}</h4>
-        </div>
-      </div>
-      <div class="row">
-          <div class="col-6 ">
-            <p>Please contact league management with the above payment id</p>
-          </div>
-        </div>
     </div>
+    <div class="row">
+      <div class="col-12">
+        <h4>Payment Id: {{paypalId}}</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p>Please contact league management with the above payment id</p>
+      </div>
+    </div>
+  </div>
 </div>

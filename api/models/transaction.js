@@ -27,7 +27,8 @@ const Transaction = sequelize.define('transaction', {
     type: Sequelize.DATE
   },
   transaction_due: {
-    type: Sequelize.DATE
+    type: Sequelize.DATE,
+    defaultValue: new Date()
   },
   paypal_transaction_id: {
     type: Sequelize.STRING

@@ -4,18 +4,18 @@ const leaguesRoutes = express.Router();
 
 // Require member model in our routes module
 let League = require('../models/league');
-let League_Item = require('../models/league_item');
+let Season_Item = require('../models/season_item');
 let Item = require('../models/item');
 
-Item.hasMany(League_Item, {foreignKey: 'item_id'});
-League_Item.belongsTo(Item, {foreignKey: 'item_id'})
+Item.hasMany(Season_Item, {foreignKey: 'item_id'});
+Season_Item.belongsTo(Item, {foreignKey: 'item_id'})
 
 // Defined store route
 leaguesRoutes.route('/').get(function (req, res) {
     League.findAll().then(leagues =>{
         let leagueItemsPromises = [];
         leagues.forEach(league => {
-            leagueItemsPromises.push(League_Item.findAll({where: {'league_id': league.league_id}, include: [Item]}));
+            leagueItemsPromises.push(Season_Item.findAll({where: {'league_id': league.league_id}, include: [Item]}));
         })
 
         Promise.all(leagueItemsPromises).then(leagueItemsArrays => {
